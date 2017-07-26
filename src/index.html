@@ -6,9 +6,11 @@
   </head>
   <body>
     <div id="que-app">
-      <p>Que.js is better than {{framework}}.</p>
-      <input type="text" q-model="framework" />
-      <button q:click="randomFramework">RandomFramework</button>
+      <div q-for="framework of frameworks">
+        <div>
+          {{framework.name}}
+        <div>
+      </div>
     </div>
   </body>
 </html>

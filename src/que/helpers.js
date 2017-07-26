@@ -19,3 +19,12 @@ export const setValueFor = (data, keypath, newValue) => {
     }
   })
 }
+
+export const express = (text, variables) => {
+  variables.forEach((variable) => {
+    const keypath = variable.slice(2, variable.length - 2)
+    const value = valueFor(this.viewModel, keypath)
+    text = text.replace(variable, value)
+  })
+  return text
+}

@@ -1,5 +1,5 @@
 import { watch } from 'que/watcher'
-import { valueFor, setValueFor } from 'que/helpers'
+import { valueFor, setValueFor, express } from 'que/helpers'
 
 export const compile = (selector, viewModel) => {
   const compiler = new Compiler(viewModel)
@@ -40,14 +40,6 @@ class Compiler {
     const reg = /(\{{2}[\w\d]+\}{2})/g
     const rawText = element.textContent
     const variables = element.textContent.match(reg)
-    const express = (text, variables) => {
-      variables.forEach((variable) => {
-        const keypath = variable.slice(2, variable.length - 2)
-        const value = valueFor(this.viewModel, keypath)
-        text = text.replace(variable, value)
-      })
-      return text
-    }
     if (variables) {
       element.textContent = express(rawText, variables)
       variables.forEach((variable) => {
@@ -87,6 +79,16 @@ class Compiler {
             value = newValue
             setValueFor(this.viewModel, keypath, newValue)
           })
+        }
+        console.log(directive)
+        if (directive === 'for') {
+          const [elementName, arrayName] = attribute.value.split(' of ')
+          const array = valueFor(this.viewModel, arrayName)
+          console.log(node)
+          console.log(node.childNodes)
+          // for (const element of array) {
+          //   setValueFor(this.viewModel, elementName, element)
+          // }
         }
         if (directive === 'class') {
           const keypath = attribute.value
